@@ -1,17 +1,17 @@
-import redis from 'redis';
-import { promisify } from 'util';
+import { createClient } from 'redis';
 
-//localhost:6379
-export const redisClient = redis.createClient();
-redisClient.get = promisify(redisClient.get);
-redisClient.setEx = promisify(redisClient.setEx);
-
-// Optional: Handle connection errors
-redisClient.on('error', (err) => {
-    console.error('Redis error:', err);
+const redisClient = createClient({
+    url: 'redis://localhost:6379',
 });
 
-// Optional: Handle successful connection
+redisClient.on('error', (err) => {
+    console.error('Redis error: ', err);
+});
+
 redisClient.on('connect', () => {
     console.log('Connected to Redis');
 });
+
+redisClient.connect().catch(console.error);
+
+export default redisClient;
