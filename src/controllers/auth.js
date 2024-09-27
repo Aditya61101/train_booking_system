@@ -11,10 +11,10 @@ export const registerUsers = async (req, res) => {
         // Checking if the user already exists
         const [existingUser] = await db.execute('SELECT * FROM users WHERE username = ?', [username]);
         if (existingUser.length > 0) {
-            return res.status(409).json({ error: 'User already exists' });  // Conflict response
+            return res.status(409).json({ error: 'User already exists' });
         }
-        const hashedPassword = await bcrypt.hash(password, 10);  // Hash the password
-        // Insert the new user into the database
+        const hashedPassword = await bcrypt.hash(password, 10);
+        // Inserting the new user into the database
         await db.execute('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', [username, hashedPassword, 'user']);
         res.status(201).json({ msg: 'User registered successfully' });
     } catch (err) {

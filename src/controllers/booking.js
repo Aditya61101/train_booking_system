@@ -9,7 +9,7 @@ export const bookTicket = async (req, res) => {
         const connection = await db.getConnection();
         await connection.beginTransaction();
 
-        // Select available seats and version with row lock
+        // Selecting available seats and version with row lock
         const [[train]] = await connection.execute("SELECT available_seats, version FROM trains WHERE id = ? FOR UPDATE",[trainId]);
 
         if (train.available_seats <= 0) {
@@ -17,8 +17,6 @@ export const bookTicket = async (req, res) => {
             connection.release();
             return res.status(400).json({ msg: "No seats available" });
         }
-
-        // Optimistic Locking: Update only if version matches
         const result = await connection.execute("UPDATE trains SET available_seats = available_seats - 1, version = version + 1 WHERE id = ? AND version = ?",[trainId, train.version]);
 
         if (result[0].affectedRows === 0) {
