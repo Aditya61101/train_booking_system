@@ -18,6 +18,10 @@ app.use(compression({
 app.use(cors());
 
 //routes
+app.get("/", (_, res) => {
+    res.send("Welcome to the API");
+});
 app.use("/api/v1/auth", require("./routes/auth"));
+app.use("/api/v1/booking", require("./routes/booking"));
 
 app.listen(port, () => `Server running on port ${port} 🔥`);
