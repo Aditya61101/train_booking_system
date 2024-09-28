@@ -47,6 +47,7 @@ A Railway Management System designed to allow users to check train availability,
     ADMIN_API_KEY="add-your-key"
     JWT_SECRET="add-your-secret"
     JWT_EXPIRES_IN="1d"
+    DB_PASSWORD="your-db-password"
 4. Ensure you have MySQL/PostgreSQL and Redis installed and running on your machine.
 
 5. **Install Redis**:
