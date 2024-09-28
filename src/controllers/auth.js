@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
-import db from "../config/db";
+import db from "../config/db.js";
+import jwt from 'jsonwebtoken';
 
 export const registerUsers = async (req, res) => { 
     const errors = validationResult(req);
@@ -26,14 +27,17 @@ export const registerUsers = async (req, res) => {
 export const loginUsers = async (req, res) => {
     const { username, password } = req.body;
     try {
-        const [users] = await pool.execute('SELECT * FROM users WHERE username = ?', [username]);
+        const [users] = await db.execute('SELECT * FROM users WHERE username = ?', [username]);
         if (!users.length || !(await bcrypt.compare(password, users[0].password))) {
             return res.status(400).json({ msg: 'Invalid credentials' });
         }
         const token = jwt.sign({ id: users[0].id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+        console.log("Login successful");
+        
         return res.status(200).json({ token });
         
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }

@@ -1,7 +1,6 @@
 import express from "express";
 import { body } from "express-validator";
-import { loginUsers, registerUsers } from "../controllers/auth";
-
+import { loginUsers, registerUsers } from "../controllers/auth.js";
 
 const router = express.Router();
 
@@ -18,3 +17,5 @@ router.post(
     body("password").isLength({ min: 6 }),
     loginUsers
 );
+
+export default router;

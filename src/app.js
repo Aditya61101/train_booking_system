@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 import compression from "compression";
 import cors from "cors";
 import rateLimit from 'express-rate-limit';
-
+import authRoute from "./routes/auth.js";
+import bookingRoute from "./routes/booking.js";
+import trainRoute from "./routes/train.js";
 dotenv.config();
 
 const app = express();
@@ -23,8 +25,8 @@ app.use(cors());
 app.get("/", (_, res) => {
     res.send("Welcome to the API");
 });
-app.use("/api/v1/auth", (await import("./routes/auth")).default);
-app.use("/api/v1/booking", (await import("./routes/booking")).default);
-app.use("/api/v1/trains", (await import("./routes/train")).default);
+app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/booking", bookingRoute);
+app.use("/api/v1/trains", trainRoute);
 
-app.listen(port, () => `Server running on port ${port} 🔥`);
+app.listen(port, () => console.log(`Server running on port ${port} 🔥`));

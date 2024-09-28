@@ -1,4 +1,4 @@
-import db from "../config/db";
+import db from "../config/db.js";
 
 export const bookTicket = async (req, res) => {
     const { trainId } = req.body;
@@ -31,6 +31,7 @@ export const bookTicket = async (req, res) => {
 
         res.status(201).json({ msg: "Seat booked successfully" });
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: "Internal server error" });
     }
 };

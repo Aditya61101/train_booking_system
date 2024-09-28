@@ -11,4 +11,13 @@ const pool = mysql2.createPool({
     queueLimit: 0
 });
 
+pool.getConnection((err, connection) => {
+    if (err) {
+        console.error("Error connecting to the database:", err.message);
+    } else {
+        console.log("Database connected successfully.");
+        connection.release();
+    }
+});
+
 export default pool.promise();
